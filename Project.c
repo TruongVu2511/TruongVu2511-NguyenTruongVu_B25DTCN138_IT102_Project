@@ -243,56 +243,6 @@ void maintenanceRoom(){
 	}while(1);
 }
 
-void showRoomsPaginate() {
-    int page_number = 1;
-    int page_size = 10;
-
-    if (roomCount == 0) {
-        printf("Danh sach phong hien tai trong! Vui long them phong truoc.\n");
-        return;
-    }
-
-    int total_pages = (roomCount % page_size == 0) ? roomCount / page_size : roomCount / page_size + 1;
-
-    while (1) {
-        printf("Moi ban chon so trang can xem (1-%d): ", total_pages);
-        if (scanf("%d", &page_number) != 1 || page_number < 1 || page_number > total_pages) {
-            printf("Loi: So trang khong hop le!\n");
-            while (getchar() != '\n');
-            continue;
-        }
-
-        int start = (page_number - 1) * page_size;
-        int end = start + page_size;
-
-        printf("\nTrang %d/%d:\n\n", page_number, total_pages);
-        printf("+-----+----------+-------+----------+-------------+\n");
-        printf("| STT | So phong | Loai  | Gia tien | Trang thai  |\n");
-        printf("+-----+----------+-------+----------+-------------+\n");
-
-        for (int i = start; i < end && i < roomCount; i++) {
-            char *statusText;
-            switch (rooms[i].status) {
-                case 0: statusText = "Trong"; break;
-                case 1: statusText = "Co khach"; break;
-                case 2: statusText = "Bao tri"; break;
-                default: statusText = "Khong ro"; break;
-            }
-
-            printf("| %-3d | %-8s | %-5d | %-8.0f | %-11s |\n",
-                   i + 1, rooms[i].roomId, rooms[i].type, rooms[i].price, statusText);
-        }
-
-        printf("+-----+----------+-------+----------+-------------+\n");
-
-        while (getchar() != '\n'); 
-        printf("Ban co muon thoat hay khong? (y/n): ");
-        char ch = getchar();
-        if (ch == 'y' || ch == 'Y') {
-            break;
-        }
-    }
-}
 
 
 
