@@ -37,7 +37,7 @@ void maintenanceRoom();
 void displayRoom();
 void searchRoom();
 void arrangeListRoom();
-void check-in();
+void checkIn();
 void rentalHistory(); 
 
     do {
@@ -182,5 +182,6 @@ int main() {
 
     return 0;
 }
+
 
 
