@@ -18,9 +18,36 @@ struct Booking {
 struct Room rooms[MAX] = {
     {"101", 1, 500, 1},
     {"102", 2, 700, 0},
-    {"103", 1, 600, 1}
+    {"103", 1, 600, 1},
+    {"104", 2, 800, 2},
+    {"105", 1, 550, 0},
+    {"106", 2, 750, 1},
+    {"107", 1, 650, 2},
+    {"108", 2, 900, 0},
+    {"109", 1, 580, 1},
+    {"110", 2, 720, 0},
+    {"111", 1, 610, 2},
+    {"112", 2, 820, 1},
+    {"113", 1, 560, 0},
+    {"114", 2, 770, 2},
+    {"115", 1, 630, 1},
+    {"116", 2, 880, 0},
+    {"117", 1, 590, 2},
+    {"118", 2, 740, 1},
+    {"119", 1, 620, 0},
+    {"120", 2, 860, 2},
+    {"121", 1, 570, 1},
+    {"122", 2, 780, 0},
+    {"123", 1, 640, 2},
+    {"124", 2, 910, 1},
+    {"125", 1, 600, 0},
+    {"126", 2, 730, 2},
+    {"127", 1, 660, 1},
+    {"128", 2, 890, 0},
+    {"129", 1, 610, 2},
+    {"130", 2, 950, 1}
 };
-int roomCount = 3;
+int roomCount = 30;
 
 int isRoomIdExists(char roomId[5]);
 void addRoom();
@@ -213,36 +240,88 @@ void updateRoom() {
     printf("Cap nhat thong tin phong %s thanh cong!\n", roomId);
 }
 
-void maintenanceRoom(){
-	char roomId[5];
-	int idx;
-	
-	do{
-		printf("Nhap so phong can bao tri :");
-		fgets(roomId,5,stdin);
-		roomId[strcspn(roomId,"\n")] = '\0';
-		
-		if(strlen(roomId)==0){
-			printf("Loi : So phong khong duoc de trong\n");
-			continue;
-		}
-		idx = isRoomIdExists(roomId);
-		if(idx==-1){
-			printf("Loi : khong tim thay phong\n");
-			return;
-		}
-		if(rooms[idx].status==1){
-			printf("Loi : phong %s dang co khach , khong the dua vao bao tri\n",roomId);
-			return;
-		}
-		
-		rooms[idx].status=2;
-		printf("Da dua phong %s vao trang thai bao tri thanh cong\n ",roomId);
-		return;
-		
-	}while(1);
+void maintenanceRoom() {
+    char roomId[5];
+    int idx;
+
+    do {
+        printf("Nhap so phong can bao tri: ");
+        fgets(roomId, sizeof(roomId), stdin);
+        roomId[strcspn(roomId, "\n")] = '\0';
+
+        if (strlen(roomId) == 0) {
+            printf("Loi: So phong khong duoc de trong\n");
+            continue;
+        }
+
+        idx = isRoomIdExists(roomId);
+        if (idx == -1) {
+            printf("Loi: Khong tim thay phong\n");
+            return;
+        }
+
+        if (rooms[idx].status == 1) {
+            printf("Loi: Phong %s dang co khach, khong the dua vao bao tri\n", roomId);
+            return;
+        }
+
+        if (rooms[idx].status == 2) {
+            printf("Phong %s dang trong trang thai bao tri roi\n", roomId);
+            return;
+        }
+
+        rooms[idx].status = 2;
+        printf("Da dua phong %s vao trang thai bao tri thanh cong\n", roomId);
+        return;
+
+    } while (1);
 }
 
+void displayRoom() {
+    int page_number = 1;
+    int page_size = 10;
 
+    if (roomCount == 0) {
+        printf("Danh sach phong hien tai trong! Vui long them phong truoc.\n");
+        return;
+    }
 
+    int total_pages = (roomCount % page_size == 0) ? roomCount / page_size : roomCount / page_size + 1;
+    char ch = 'y';
 
+    do {
+        printf("Moi ban chon so trang can xem : ");
+        if (scanf("%d", &page_number) != 1 || page_number < 1 || page_number > total_pages) {
+            printf("Loi: So trang khong hop le!\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        int start = (page_number - 1) * page_size;
+        int end = start + page_size;
+
+        printf("\nTrang %d/%d:\n", page_number, total_pages);
+        printf("| STT | So phong | Loai  | Gia tien | Trang thai  |\n");
+
+        for (int i = start; i < end && i < roomCount; i++) {
+            printf("| %-3d | %-8s | %-5d | %-8.0f | ", 
+                   i + 1, rooms[i].roomId, rooms[i].type, rooms[i].price);
+
+            switch (rooms[i].status) {
+                case 0: printf("%s", "Trong"); break;
+                case 1: printf("%s", "Co khach"); break;
+                case 2: printf("%s", "Bao tri"); break;
+                default: printf("%s", "Khong ro"); break;
+            }
+            printf("\n");
+        }
+
+        printf("Bang danh sach phong dep, co phan trang 10 dong/trang, hien thi ro trang thai bang chu.\n");
+
+        while (getchar() != '\n'); 
+        printf("Ban co muon tiep tuc trang tiep theo hay khong ? (y/n): ");
+        ch = getchar();
+        while (getchar() != '\n'); 
+
+    } while (ch == 'y' || ch == 'Y');
+}
