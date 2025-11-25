@@ -30,10 +30,15 @@ int isRoomIdExists(char roomId[5]) {
     }
     return -1;
 }
-void addRoom() {
-    int typeNew;
-    double priceNew;
-    char tempRoomId[10];
+int isRoomIdExists(char roomId[5]);
+void addRoom();
+void updateRoom();
+void maintenanceRoom();
+void displayRoom();
+void searchRoom();
+void arrangeListRoom();
+void check-in();
+void rentalHistory(); 
 
     do {
         printf("Nhap so phong (3-4 ky tu): ");
@@ -177,4 +182,5 @@ int main() {
 
     return 0;
 }
+
 
