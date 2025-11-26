@@ -20,7 +20,7 @@ struct Room rooms[MAX] = {
     {"102", 2, 700, 0},
     {"103", 1, 600, 1},
     {"104", 2, 800, 2},
-    {"105", 1, 550, 0},
+    {"105", 1, 550, 1},
     {"106", 2, 750, 1},
     {"107", 1, 650, 2},
     {"108", 2, 900, 0},
@@ -28,19 +28,19 @@ struct Room rooms[MAX] = {
     {"110", 2, 720, 0},
     {"111", 1, 610, 2},
     {"112", 2, 820, 1},
-    {"113", 1, 560, 0},
+    {"113", 1, 560, 1},
     {"114", 2, 770, 2},
     {"115", 1, 630, 1},
     {"116", 2, 880, 0},
     {"117", 1, 590, 2},
     {"118", 2, 740, 1},
-    {"119", 1, 620, 0},
+    {"119", 1, 620, 1},
     {"120", 2, 860, 2},
     {"121", 1, 570, 1},
     {"122", 2, 780, 0},
     {"123", 1, 640, 2},
     {"124", 2, 910, 1},
-    {"125", 1, 600, 0},
+    {"125", 1, 600, 1},
     {"126", 2, 730, 2},
     {"127", 1, 660, 1},
     {"128", 2, 890, 0},
@@ -93,8 +93,10 @@ int main() {
             	displayRoom();
                 break;
             case 5:
+            	searchRoom(); 
                 break;
             case 6:
+            	arrangeListRoom();
                 break;
             case 7:
                 break;
@@ -308,20 +310,78 @@ void displayRoom() {
                    i + 1, rooms[i].roomId, rooms[i].type, rooms[i].price);
 
             switch (rooms[i].status) {
-                case 0: printf("%s", "Trong"); break;
-                case 1: printf("%s", "Co khach"); break;
-                case 2: printf("%s", "Bao tri"); break;
-                default: printf("%s", "Khong ro"); break;
+                case 0:
+				 printf("%s", "Trong");
+				 break;
+                case 1: 
+				 printf("%s", "Co khach");
+				 break;
+                case 2:
+				 printf("%s", "Bao tri");
+				 break;
+                default: 
+				printf("%s", "Khong ro"); 
+				break;
             }
             printf("\n");
         }
 
         printf("Bang danh sach phong dep, co phan trang 10 dong/trang, hien thi ro trang thai bang chu.\n");
-
-        while (getchar() != '\n'); 
+ 
         printf("Ban co muon tiep tuc trang tiep theo hay khong ? (y/n): ");
         ch = getchar();
         while (getchar() != '\n'); 
 
     } while (ch == 'y' || ch == 'Y');
 }
+
+void searchRoom(){
+    int type;
+    int found = 0;
+
+    printf("Nhap loai phong can tim (1 = Don, 2 = Doi): ");
+    if (scanf("%d", &type) != 1 || (type != 1 && type != 2)) {
+        while (getchar() != '\n'); 
+        printf("Loi: Vui long chon 1 (Don) hoac 2 (Doi)!\n");
+        return;
+    }
+
+    printf("\nDanh sach cac phong TRONG loai %s:\n", (type == 1) ? "Don" : "Doi");
+    printf("| STT | So phong | Loai | Gia tien | Trang thai |\n");
+
+    for (int i = 0; i < roomCount; i++) {
+        if (rooms[i].type == type && rooms[i].status == 0) {
+            found++;
+            printf("| %-3d | %-8s | %-4d | %-8.0f | Trong\n",found, rooms[i].roomId, rooms[i].type, rooms[i].price);
+                   
+        }
+    }
+
+    if (found == 0) {
+        printf("Hien tai khong co phong trong loai %s!\n", (type == 1) ? "Don" : "Doi");
+    }
+}
+void arrangeListRoom() {
+    if (roomCount == 0) {
+        printf("Danh sach phong trong, khong can sap xep!\n");
+        return;
+    }
+    for (int i = 0; i < roomCount - 1; i++) {
+        for (int j = 0; j < roomCount - i - 1; j++) {
+            if (rooms[j].price < rooms[j + 1].price) {
+                struct Room temp = rooms[j];
+                rooms[j] = rooms[j + 1];
+                rooms[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("Da sap xep danh sach phong theo gia giam dan thanh cong!\n");
+
+    displayRoom();
+}
+
+
+
+
+
