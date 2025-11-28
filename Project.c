@@ -467,12 +467,12 @@ do {
             (customerName[i] >= 'a' && customerName[i] <= 'z') ||
             (customerName[i] == ' ')) {
         } else {
-            valid = 0; 
+            flag = 0; 
             break;
         }
     }
 
-    if (valid == 0) {
+    if (flag == 0) {
         printf("Loi: Ten khach hang chi duoc chua chu cai va khoang trang!\n");
     } else {
         break;
